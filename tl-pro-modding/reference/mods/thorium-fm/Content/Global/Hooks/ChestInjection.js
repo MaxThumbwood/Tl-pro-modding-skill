@@ -1,0 +1,255 @@
+import { TileData } from "../../../TL/Modules/TileData.js";
+import { ModItem } from "../../../TL/ModItem.js";
+import { Terraria } from "../../../TL/ModImports.js";
+import { ChestStyle1 } from "../Enums/ChestStyle1.js";
+import { Rand } from "../../../TL/Modules/Rand.js";
+
+const { Main, Item, InventoryStorage } = Terraria;
+
+const InjectionRules = [
+    {
+        type: 21,
+        style: ChestStyle1.LivingWood,
+        getItemID: () => ModItem.getTypeByName('LivingWoodSap'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total / 2)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Wood,
+        getItemID: () => ModItem.getTypeByName('Flute'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.12)),
+        action: 'replace',
+        salt: 941
+    },
+    {
+        type: 21,
+        style: ChestStyle1.WebCovered,
+        getItemID: () => ModItem.getTypeByName('WebGun'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total / 2)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Gold,
+        getItemID: () => ModItem.getTypeByName('EnchantedStaff'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.15)),
+        action: 'replace',
+        salt: 397
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Gold,
+        getItemID: () => ModItem.getTypeByName('EnchantedCane'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.15)),
+        action: 'replace',
+        salt: 613
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Gold,
+        getItemID: () => ModItem.getTypeByName('EnchantedPickaxe'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.15)),
+        action: 'replace',
+        salt: 829
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Honey,
+        getItemID: () => Terraria.ID.ItemID.Beenade,
+        stack: Rand.Next(15, 30),
+        calculateAmount: (total) => total,
+        action: 'replace',
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Ivy,
+        getItemID: () => ModItem.getTypeByName('ForestOcarina'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace',
+        salt: 1187
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Ivy,
+        getItemID: () => ModItem.getTypeByName('TheDigester'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace',
+    },
+    {
+        type: 21,
+        style: ChestStyle1.RichMahogany,
+        getItemID: () => ModItem.getTypeByName('TheDigester'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedGold,
+        getItemID: () => ModItem.getTypeByName('StreamSting'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedGold,
+        getItemID: () => ModItem.getTypeByName('BoneReaper'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedGold,
+        getItemID: () => ModItem.getTypeByName('HighTide'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedGold,
+        getItemID: () => ModItem.getTypeByName('NaiadShiv'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedGold,
+        getItemID: () => ModItem.getTypeByName('StrongestLink'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedShadow,
+        getItemID: () => ModItem.getTypeByName('LightsLament'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedShadow,
+        getItemID: () => ModItem.getTypeByName('Nocturne'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total * 0.30)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.Ice,
+        getItemID: () => ModItem.getTypeByName('FrozenTiara'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total / 6)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.FrozenBiome,
+        getItemID: () => ModItem.getTypeByName('FrozenTiara'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total / 6)),
+        action: 'replace'
+    },
+    {
+        type: 21,
+        style: ChestStyle1.LockedFrozenBiome,
+        getItemID: () => ModItem.getTypeByName('FrozenTiara'),
+        stack: 1,
+        calculateAmount: (total) => Math.max(1, Math.floor(total / 6)),
+        action: 'replace'
+    }
+];
+
+export class ChestInjection {
+    Inject() {
+        const chestDictionary = this._mapChests();
+        const seedHash = this._getSeedHash();
+        const usedChests = new Set(); 
+
+        for (let ruleIndex = 0; ruleIndex < InjectionRules.length; ruleIndex++) {
+            const rule = InjectionRules[ruleIndex];
+            const dictKey = `${rule.type}_${rule.style}`;
+            
+            let validChests = [...(chestDictionary[dictKey] || [])];
+
+            if (validChests.length === 0) continue;
+
+            const originalTotal = validChests.length; 
+            
+            validChests = validChests.filter(chestIndex => !usedChests.has(chestIndex));
+
+            const salt = rule.salt ?? (ruleIndex * 179 + 53);
+            validChests.sort((a, b) => {
+                const hashA = Math.abs((seedHash ^ (a * salt)) % 1000);
+                const hashB = Math.abs((seedHash ^ (b * salt)) % 1000);
+                return hashA - hashB;
+            });
+
+            const amount = rule.calculateAmount(originalTotal);
+
+            for (let j = 0; j < amount && j < validChests.length; j++) {
+                const chestIndex = validChests[j];
+                
+                usedChests.add(chestIndex); 
+
+                const storage = InventoryStorage.new();
+                storage['void .ctor(int chest)'](chestIndex);
+
+                const item = Item.new();
+                item['void .ctor()']();
+                item['void SetDefaults(int Type, ItemVariant variant)'](rule.getItemID(), null);
+                item.stack = rule.stack;
+
+                if (rule.action === 'replace') {
+                    storage.item[0] = item;
+                } else if (rule.action === 'add') {
+                    storage.AddItemToShop(item);
+                }
+
+                storage.SyncToChest();
+            }
+        }
+    }
+
+    _mapChests() {
+        const chests = Main.chest;
+        const chestDictionary = {};
+
+        for (let i = 0; i < 8000; i++) {
+            const chest = chests[i];
+            if (chest === null) continue;
+
+            const tile = new TileData(chest.x, chest.y);
+            const style = Math.floor(tile.frameX / 36);
+            const dictKey = `${tile.type}_${style}`;
+
+            if (!chestDictionary[dictKey]) chestDictionary[dictKey] = [];
+            chestDictionary[dictKey].push(i);
+        }
+
+        return chestDictionary;
+    }
+
+    _getSeedHash() {
+        const seedStr = String(Main.ActiveWorldFileData.Seed);
+        let seedHash = 0;
+        for (let i = 0; i < seedStr.length; i++) {
+            seedHash = (seedHash << 5) - seedHash + seedStr.charCodeAt(i);
+        }
+        return seedHash;
+    }
+}

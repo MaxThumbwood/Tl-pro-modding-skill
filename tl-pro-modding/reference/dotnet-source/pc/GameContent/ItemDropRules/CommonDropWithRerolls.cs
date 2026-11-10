@@ -1,0 +1,57 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.GameContent.ItemDropRules.CommonDropWithRerolls
+// Assembly: Terraria, Version=1.4.5.5, Culture=neutral, PublicKeyToken=null
+// MVID: E05F637A-D25C-442B-8F99-788F39A34454
+// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe
+
+using System.Collections.Generic;
+
+#nullable disable
+namespace Terraria.GameContent.ItemDropRules;
+
+public class CommonDropWithRerolls : CommonDrop
+{
+  public int timesToRoll;
+
+  public CommonDropWithRerolls(
+    int itemId,
+    int chanceDenominator,
+    int amountDroppedMinimum,
+    int amountDroppedMaximum,
+    int rerolls)
+    : base(itemId, chanceDenominator, amountDroppedMinimum, amountDroppedMaximum)
+  {
+    this.timesToRoll = rerolls + 1;
+  }
+
+  public override ItemDropAttemptResult TryDroppingItem(DropAttemptInfo info)
+  {
+    bool flag = false;
+    for (int index = 0; index < this.timesToRoll; ++index)
+      flag = flag || info.player.RollLuck(this.chanceDenominator) < this.chanceNumerator;
+    if (flag)
+    {
+      CommonCode.DropItemFromNPC(info.npc, this.itemId, info.rng.Next(this.amountDroppedMinimum, this.amountDroppedMaximum + 1));
+      return new ItemDropAttemptResult()
+      {
+        State = ItemDropAttemptResultState.Success
+      };
+    }
+    return new ItemDropAttemptResult()
+    {
+      State = ItemDropAttemptResultState.FailedRandomRoll
+    };
+  }
+
+  public override void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)
+  {
+    float num1 = 1f - (float) this.chanceNumerator / (float) this.chanceDenominator;
+    float num2 = 1f;
+    for (int index = 0; index < this.timesToRoll; ++index)
+      num2 *= num1;
+    float personalDropRate = 1f - num2;
+    float dropRate = personalDropRate * ratesInfo.parentDroprateChance;
+    drops.Add(new DropRateInfo(this.itemId, this.amountDroppedMinimum, this.amountDroppedMaximum, dropRate, ratesInfo.conditions));
+    Chains.ReportDroprates(this.ChainedRules, personalDropRate, drops, ratesInfo);
+  }
+}

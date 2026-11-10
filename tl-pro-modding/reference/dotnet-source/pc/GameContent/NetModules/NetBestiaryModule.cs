@@ -1,0 +1,73 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.GameContent.NetModules.NetBestiaryModule
+// Assembly: Terraria, Version=1.4.5.5, Culture=neutral, PublicKeyToken=null
+// MVID: E05F637A-D25C-442B-8F99-788F39A34454
+// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe
+
+using System.IO;
+using Terraria.ID;
+using Terraria.Net;
+
+#nullable disable
+namespace Terraria.GameContent.NetModules;
+
+public class NetBestiaryModule : Terraria.Net.NetModule
+{
+  public static NetPacket SerializeKillCount(int npcNetId, int killcount)
+  {
+    NetPacket packet = Terraria.Net.NetModule.CreatePacket<NetBestiaryModule>();
+    packet.Writer.Write((byte) 0);
+    packet.Writer.Write((short) npcNetId);
+    packet.Writer.Write7BitEncodedInt(killcount);
+    return packet;
+  }
+
+  public static NetPacket SerializeSight(int npcNetId)
+  {
+    NetPacket packet = Terraria.Net.NetModule.CreatePacket<NetBestiaryModule>();
+    packet.Writer.Write((byte) 1);
+    packet.Writer.Write((short) npcNetId);
+    return packet;
+  }
+
+  public static NetPacket SerializeChat(int npcNetId)
+  {
+    NetPacket packet = Terraria.Net.NetModule.CreatePacket<NetBestiaryModule>();
+    packet.Writer.Write((byte) 2);
+    packet.Writer.Write((short) npcNetId);
+    return packet;
+  }
+
+  public override bool Deserialize(BinaryReader reader, int userId)
+  {
+    if (Main.dedServ)
+      return false;
+    switch (reader.ReadByte())
+    {
+      case 0:
+        short key1 = reader.ReadInt16();
+        string bestiaryCreditId1 = ContentSamples.NpcsByNetId[(int) key1].GetBestiaryCreditId();
+        int killCount = reader.Read7BitEncodedInt();
+        Main.BestiaryTracker.Kills.SetKillCountDirectly(bestiaryCreditId1, killCount);
+        break;
+      case 1:
+        short key2 = reader.ReadInt16();
+        string bestiaryCreditId2 = ContentSamples.NpcsByNetId[(int) key2].GetBestiaryCreditId();
+        Main.BestiaryTracker.Sights.SetWasSeenDirectly(bestiaryCreditId2);
+        break;
+      case 2:
+        short key3 = reader.ReadInt16();
+        string bestiaryCreditId3 = ContentSamples.NpcsByNetId[(int) key3].GetBestiaryCreditId();
+        Main.BestiaryTracker.Chats.SetWasChatWithDirectly(bestiaryCreditId3);
+        break;
+    }
+    return true;
+  }
+
+  private enum BestiaryUnlockType : byte
+  {
+    Kill,
+    Sight,
+    Chat,
+  }
+}

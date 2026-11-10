@@ -1,0 +1,44 @@
+import { ModHealerItem } from '../../../Common/ModHealerItem.js';
+import { Terraria } from '../../../TL/ModImports.js';
+import { ModProjectile } from '../../../TL/ModProjectile.js';
+
+const NewProjectile = Terraria.Projectile['int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner, float ai0, float ai1, float ai2, NewProjectileModifier modifer)'];
+
+export class TheStalker extends ModHealerItem {
+    static REACH = 23.625;
+
+    constructor() {
+        super();
+        this.Texture = 'Items/Healer/' + this.constructor.name;
+    }
+
+    SetDefaults() {
+        this.Item.width = 30;
+        this.Item.height = 30;
+        this.Item.damage = 15;
+        this.Item.useTime = 30;
+        this.Item.useAnimation = 30;
+        this.Item.useStyle = 5;
+        this.Item.noMelee = true;
+        this.Item.noUseGraphic = true;
+        this.Item.channel = true;
+        this.Item.autoReuse = true;
+        this.Item.knockBack = 5;
+        this.Item.value = Terraria.Item.sellPrice(0, 0, 15, 0);
+        this.Item.rare = 1;
+        const swing = Terraria.ID.SoundID.DD2_MonkStaffSwing;
+        if (!swing) tl.log('[Thorium] SoundID.DD2_MonkStaffSwing nao resolveu, usando Item1');
+        this.Item.UseSound = swing ?? Terraria.ID.SoundID.Item1;
+        this.Item.shoot = ModProjectile.getTypeByName('TheStalkerPro');
+        this.Item.shootSpeed = 110;
+    }
+
+    Shoot(item, player, position, velocity, type, damage, knockBack) {
+        NewProjectile(
+            null, position.X, position.Y, velocity.X, velocity.Y,
+            type, damage, knockBack, player.whoAmI,
+            0, TheStalker.REACH * player.direction, 0, null
+        );
+        return false;
+    }
+}

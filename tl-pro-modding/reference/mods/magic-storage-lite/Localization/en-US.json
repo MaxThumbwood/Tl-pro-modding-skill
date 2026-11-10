@@ -1,0 +1,8 @@
+{
+  "ItemName": {
+    "StorageTerminal": "Storage Terminal"
+  },
+  "ItemTooltip": {
+    "StorageTerminal": "Use: opens the storage and crafting terminal\nSearch, deposit, and withdraw items from nearby chests\nInstall stations and craft using materials stored in the chests"
+  }
+}

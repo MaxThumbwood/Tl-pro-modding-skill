@@ -1,0 +1,23 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.GameContent.Dyes.TwilightHairDyeShaderData
+// Assembly: Terraria, Version=1.4.5.5, Culture=neutral, PublicKeyToken=null
+// MVID: E05F637A-D25C-442B-8F99-788F39A34454
+// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe
+
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria.DataStructures;
+using Terraria.Graphics.Shaders;
+
+#nullable disable
+namespace Terraria.GameContent.Dyes;
+
+public class TwilightHairDyeShaderData(Asset<Effect> shader, string passName) : HairShaderData(shader, passName)
+{
+  public override void Apply(Player player, DrawData? drawData = null)
+  {
+    if (drawData.HasValue)
+      this.UseTargetPosition(Main.screenPosition + drawData.Value.position);
+    base.Apply(player, drawData);
+  }
+}

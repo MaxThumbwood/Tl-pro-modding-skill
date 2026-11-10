@@ -1,0 +1,27 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.ID.TeleportationStyleID
+// Assembly: Terraria, Version=1.4.5.5, Culture=neutral, PublicKeyToken=null
+// MVID: E05F637A-D25C-442B-8F99-788F39A34454
+// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe
+
+#nullable disable
+namespace Terraria.ID;
+
+public static class TeleportationStyleID
+{
+  public const int TeleporterTile = 0;
+  public const int RodOfDiscord = 1;
+  public const int TeleportationPotion = 2;
+  public const int RecallPotion = 3;
+  public const int Portal = 4;
+  public const int MagicConch = 5;
+  public const int DebugTeleport = 6;
+  public const int DemonConch = 7;
+  public const int PotionOfReturn = 8;
+  public const int TeleportationPylon = 9;
+  public const int QueenSlimeHook = 10;
+  public const int ShellphoneSpawn = 11;
+  public const int ShimmerTownNPCTransform = 12;
+  public const int MysticFrog = 13;
+  public const int NoEffect = 14;
+}

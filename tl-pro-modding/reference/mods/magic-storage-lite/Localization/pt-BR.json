@@ -1,0 +1,8 @@
+{
+  "ItemName": {
+    "StorageTerminal": "Terminal de Armazenamento"
+  },
+  "ItemTooltip": {
+    "StorageTerminal": "Usar: abre o terminal de armazenamento e craft\nPesquise, deposite e retire itens dos baús próximos\nInstale estações e fabrique usando materiais guardados nos baús"
+  }
+}

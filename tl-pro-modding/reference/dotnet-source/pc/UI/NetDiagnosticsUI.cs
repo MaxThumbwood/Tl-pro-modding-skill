@@ -1,0 +1,180 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: Terraria.UI.NetDiagnosticsUI
+// Assembly: Terraria, Version=1.4.5.5, Culture=neutral, PublicKeyToken=null
+// MVID: E05F637A-D25C-442B-8F99-788F39A34454
+// Assembly location: C:\Program Files (x86)\Steam\steamapps\common\Terraria\Terraria.exe
+
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
+using System.Collections.Generic;
+using System.Threading;
+using Terraria.GameContent;
+using Terraria.ID;
+
+#nullable disable
+namespace Terraria.UI;
+
+public class NetDiagnosticsUI : INetDiagnosticsUI
+{
+  private NetDiagnosticsUI.CounterForMessage[] _counterByMessageId = new NetDiagnosticsUI.CounterForMessage[(int) MessageID.Count + 1];
+  private Dictionary<int, NetDiagnosticsUI.CounterForMessage> _counterByModuleId = new Dictionary<int, NetDiagnosticsUI.CounterForMessage>();
+  private volatile int bytesRecv;
+  private volatile int bytesRecvLast;
+  private volatile int bytesSent;
+  private volatile int bytesSentLast;
+  private int _highestFoundReadBytes = 1;
+  private int _highestFoundReadCount = 1;
+
+  public void Reset()
+  {
+    this.bytesRecv = 0;
+    this.bytesRecvLast = 0;
+    this.bytesSent = 0;
+    this.bytesSentLast = 0;
+    for (int index = 0; index < this._counterByMessageId.Length; ++index)
+      this._counterByMessageId[index].Reset();
+    this._counterByModuleId.Clear();
+    this._counterByMessageId[10].exemptFromBadScoreTest = true;
+    this._counterByMessageId[82].exemptFromBadScoreTest = true;
+  }
+
+  public void CountReadMessage(int messageId, int messageLength)
+  {
+    Interlocked.Add(ref this.bytesRecv, messageLength);
+    this._counterByMessageId[messageId].CountReadMessage(messageLength);
+  }
+
+  public void CountSentMessage(int messageId, int messageLength)
+  {
+    Interlocked.Add(ref this.bytesSent, messageLength);
+    this._counterByMessageId[messageId].CountSentMessage(messageLength);
+  }
+
+  public void CountReadModuleMessage(int moduleMessageId, int messageLength)
+  {
+    NetDiagnosticsUI.CounterForMessage counterForMessage;
+    this._counterByModuleId.TryGetValue(moduleMessageId, out counterForMessage);
+    counterForMessage.CountReadMessage(messageLength);
+    this._counterByModuleId[moduleMessageId] = counterForMessage;
+  }
+
+  public void CountSentModuleMessage(int moduleMessageId, int messageLength)
+  {
+    NetDiagnosticsUI.CounterForMessage counterForMessage;
+    this._counterByModuleId.TryGetValue(moduleMessageId, out counterForMessage);
+    counterForMessage.CountSentMessage(messageLength);
+    this._counterByModuleId[moduleMessageId] = counterForMessage;
+  }
+
+  public void RotateSendRecvCounters()
+  {
+    this.bytesRecvLast = Interlocked.Exchange(ref this.bytesRecv, 0);
+    this.bytesSentLast = Interlocked.Exchange(ref this.bytesSent, 0);
+  }
+
+  public void GetLastSentRecvBytes(out int sent, out int recv)
+  {
+    sent = this.bytesSentLast;
+    recv = this.bytesRecvLast;
+  }
+
+  public void Draw(SpriteBatch spriteBatch)
+  {
+    Utils.DrawBorderString(Main.spriteBatch, "Packet Stats (bytes) F8 to hide", new Vector2(800f, 80f), Color.White);
+    int num1 = this._counterByMessageId.Length + this._counterByModuleId.Count;
+    for (int index = 0; index <= num1 / 51; ++index)
+      Utils.DrawInvBG(spriteBatch, 190 + 400 * index, 110, 390, 683);
+    Vector2 position;
+    for (int index = 0; index < this._counterByMessageId.Length; ++index)
+    {
+      int num2 = index / 51;
+      int num3 = index - num2 * 51;
+      position.X = (float) (200 + num2 * 400);
+      position.Y = (float) (120 + num3 * 13);
+      this.DrawCounter(spriteBatch, ref this._counterByMessageId[index], index.ToString(), position);
+    }
+    int num4 = this._counterByMessageId.Length + 1;
+    foreach (KeyValuePair<int, NetDiagnosticsUI.CounterForMessage> keyValuePair in this._counterByModuleId)
+    {
+      int num5 = num4 / 51;
+      int num6 = num4 - num5 * 51;
+      position.X = (float) (200 + num5 * 400);
+      position.Y = (float) (120 + num6 * 13);
+      NetDiagnosticsUI.CounterForMessage counter = keyValuePair.Value;
+      this.DrawCounter(spriteBatch, ref counter, ".." + keyValuePair.Key.ToString(), position);
+      ++num4;
+    }
+  }
+
+  private void DrawCounter(
+    SpriteBatch spriteBatch,
+    ref NetDiagnosticsUI.CounterForMessage counter,
+    string title,
+    Vector2 position)
+  {
+    if (!counter.exemptFromBadScoreTest)
+    {
+      if (this._highestFoundReadCount < counter.timesReceived)
+        this._highestFoundReadCount = counter.timesReceived;
+      if (this._highestFoundReadBytes < counter.bytesReceived)
+        this._highestFoundReadBytes = counter.bytesReceived;
+    }
+    Vector2 pos = position;
+    string str = title + ": ";
+    Color color = Main.hslToRgb((float) (0.30000001192092896 * (1.0 - (double) Utils.Remap((float) counter.bytesReceived, 0.0f, (float) this._highestFoundReadBytes, 0.0f, 1f))), 1f, 0.5f);
+    if (counter.exemptFromBadScoreTest)
+      color = Color.White;
+    string text1 = str;
+    this.DrawText(spriteBatch, text1, pos, color);
+    pos.X += 30f;
+    string text2 = "rx:" + $"{counter.timesReceived,0}";
+    this.DrawText(spriteBatch, text2, pos, color);
+    pos.X += 70f;
+    string text3 = $"{counter.bytesReceived,0}";
+    this.DrawText(spriteBatch, text3, pos, color);
+    pos.X += 70f;
+    string text4 = str;
+    this.DrawText(spriteBatch, text4, pos, color);
+    pos.X += 30f;
+    string text5 = "tx:" + $"{counter.timesSent,0}";
+    this.DrawText(spriteBatch, text5, pos, color);
+    pos.X += 70f;
+    string text6 = $"{counter.bytesSent,0}";
+    this.DrawText(spriteBatch, text6, pos, color);
+  }
+
+  private void DrawText(SpriteBatch spriteBatch, string text, Vector2 pos, Color color)
+  {
+    DynamicSpriteFontExtensionMethods.DrawString(spriteBatch, FontAssets.MouseText.Value, text, pos, color, 0.0f, Vector2.Zero, 0.7f, SpriteEffects.None, 0.0f, (Vector2[]) null, (Color[]) null);
+  }
+
+  private struct CounterForMessage
+  {
+    public int timesReceived;
+    public int timesSent;
+    public int bytesReceived;
+    public int bytesSent;
+    public bool exemptFromBadScoreTest;
+
+    public void Reset()
+    {
+      this.timesReceived = 0;
+      this.timesSent = 0;
+      this.bytesReceived = 0;
+      this.bytesSent = 0;
+    }
+
+    public void CountReadMessage(int messageLength)
+    {
+      ++this.timesReceived;
+      this.bytesReceived += messageLength;
+    }
+
+    public void CountSentMessage(int messageLength)
+    {
+      ++this.timesSent;
+      this.bytesSent += messageLength;
+    }
+  }
+}

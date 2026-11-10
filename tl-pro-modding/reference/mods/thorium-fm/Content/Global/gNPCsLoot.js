@@ -1,0 +1,245 @@
+import { GlobalLoot } from "../../TL/GlobalLoot.js";
+import { Terraria } from "../../TL/ModImports.js";
+import { ModItem } from "../../TL/ModItem.js";
+
+const { ItemDropRule, ItemDropDatabase, Conditions } = Terraria.GameContent.ItemDropRules;
+const { NPCID, ItemID } = Terraria.ID;
+
+export class gNPCsLoot extends GlobalLoot {
+    constructor(itemDropsDatabase) {
+        super(itemDropsDatabase);
+    }
+
+    static NPCsLoots = [
+        {
+            npcType: NPCID.WyvernHead,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('CloudyChewToy'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: NPCID.IceSlime,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('IcyShard'), 4, 1, 1)
+            ]
+        },
+        {
+            npcType: NPCID.ZombieEskimo,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('IcyShard'), 4, 1, 1),
+            ]
+        },
+        {
+            npcType: NPCID.BloodZombie,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('Blood'), 4, 1, 3),
+                () => ItemDropRule.Common(ModItem.getTypeByName('UnholyShards'), 8, 1, 2)
+            ]
+        },
+        {
+            npcType: NPCID.Drippler,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('Blood'), 5, 1, 3),
+                () => ItemDropRule.Common(ModItem.getTypeByName('UnholyShards'), 8, 1, 2)
+            ]
+        },
+        {
+            npcType: NPCID.Zombie,
+            rules: [
+                () => {
+                    const condition = Conditions.IsBloodMoonAndNotFromStatue.new();
+                    return ItemDropRule.ByCondition(condition, ModItem.getTypeByName('Blood'), 10, 1, 1, 1)
+                }
+            ]
+        },
+        {
+            npcType: NPCID.WallCreeper,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('IncubatedEgg'), 10, 1, 1)
+            ]
+        },
+        {
+            npcType: NPCID.WallCreeperWall,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('IncubatedEgg'), 10, 1, 1)
+            ]
+        },
+        {
+            npcType: NPCID.Bunny,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('LuckyRabbitsFoot'), 130, 1, 1)
+            ]
+        },
+        {
+            npcType: NPCID.Vulture,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('Talon'), 4, 1, 2)
+            ]
+        },
+        {
+            npcType: NPCID.GoblinPeon,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinArcher,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinScout,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinShark,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinSorcerer,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinSummoner,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinThief,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinTinkerer,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.GoblinWarrior,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('YewWood'), 4, 1, 1)
+
+            ]
+        },
+        {
+            npcType: NPCID.SkeletronHead,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('GuildsStaff'), 4, 1, 1)
+            ]
+        },
+        {
+            npcType: NPCID.BoneSerpentHead,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SpineBreaker'), 12, 1, 1)
+
+            ]
+        },
+        {
+            npcType: 494,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('CrawdadClaw'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 495,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('CrawdadClaw'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 498,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 499,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 500,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 501,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 502,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 503,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 504,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 505,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 506,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('SalamanderEye'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 496,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('GiantShellSpine'), 20, 1, 1)
+            ]
+        },
+        {
+            npcType: 497,
+            rules: [
+                () => ItemDropRule.Common(ModItem.getTypeByName('GiantShellSpine'), 20, 1, 1)
+            ]
+        },
+    ];
+
+    ModifyGlobalLoot() {
+        for (const npcData of gNPCsLoot.NPCsLoots) {
+            for (const rule of npcData.rules) {
+                const dropRule = typeof rule === 'function' ? rule() : rule;
+                this.RegisterToNPC(npcData.npcType, dropRule);
+            }
+        }
+    }
+
+
+}
